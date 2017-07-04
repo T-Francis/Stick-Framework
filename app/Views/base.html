@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title><?= $title; ?></title>
+		<link rel="shortcut icon" href="#" type="image/x-icon">
+		<link rel="icon" href="#" type="image/x-icon">
+		<!-- bootsrap css -->
+		<link href="/libraries/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+		<!-- font-awsome -->
+		<link href="/libraries/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+		<!-- base css -->
+		<link href="/css/base.css" rel="stylesheet">
+		<?php if ($loadCss){echo '<!-- Loaded Interface CSS --><link href="/css/'.$controllerName.'.css" rel="stylesheet">';}?>
+	</head>
+
+	<body>
+
+		<!-- NAVBAR -->
+		<div class="container">
+			<?php include_once $pathToNav; ?>
+		</div>
+
+		<!-- ALERT FLASH -->
+		<div class="container">
+			<div id="alertFlash" class="col-sm-12 text-center">
+			<?php if (isset($flashMessage)){
+				foreach ($flashMessage as $class => $message){
+					echo '<div class="alert alert-dismissable alert-'.$class.'">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>'.$message.'
+					</div>';
+				}};
+			?>
+			</div>
+		</div>
+
+		<!-- BASE CONTAINER -->
+		<div class="container">
+
+			<!-- HEADER -->
+			<header class="col-sm-12 text-center">
+				<?php include_once $pathToHeader; ?>
+			</header>
+
+			<!-- CONTENT -->
+			<div class="container text-center">
+				<?php include_once $pathToContent; ?>
+			</div>
+
+			<!-- FOOTER -->
+			<footer class="col-sm-12 text-center">
+				<?php include_once $pathToFooter; ?>
+			</footer>
+		</div><!-- END BASE CONTAINER -->
+
+
+		<!-- jQuery js -->
+		<script src="/libraries/jquery/jquery.js" type="text/javascript" language="javascript"></script>
+		<!-- bootsrap js  -->
+		<script src="/libraries/bootstrap/js/bootstrap.min.js" type="text/javascript" language="javascript"></script>
+		<!-- Home made libraries -->
+		<script src="/libraries/homeLibs.js" type="text/javascript" language="javascript"></script>
+		<!-- basic js -->
+		<script src="/js/base.js" type="text/javascript" language="javascript"></script>
+		<?php if ($loadJs){echo '<!-- Loaded Interface JS --><script src="/js/'.$controllerName.'.js" type="text/javascript" language="javascript"></script>';}?>
+	</body>
+
+</html>

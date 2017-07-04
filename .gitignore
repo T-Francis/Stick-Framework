@@ -1,0 +1,17 @@
+# [ COMPOSER DEPENDENCIES ]
+
+# [ PUBLIC DEPENDENCIES ]
+
+# [ CONFIG ]
+
+# [ LOGS ]
+*error.log
+*access.log
+
+# [ DEV ENVIRONMENT ]
+
+# [ DIRTFILES ]
+*.temp.*
+*.old.*
+*.new.*
+reliqueDev.php
