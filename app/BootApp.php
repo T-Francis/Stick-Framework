@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * [BootApp class qui se charge d'autoLoad les classes et re retourner la route au routeur]
+ */
 class BootApp
 {
 

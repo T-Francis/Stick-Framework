@@ -1,7 +1,10 @@
 <?php
+/**
+ * EXAMPLE
+ */
+
 //on use le namespace de la classe StickFramework;
 use StickFramework;
-
 //on instancie la classe StickFramework;
 $stickFramework = new StickFramework\StickFramework;
 
@@ -14,7 +17,5 @@ $updatedId = 102;
 $logs = array('Update User' => $userName . " du groupe " . $userGroup . ' a modifier l\'id : '. $updatedId);
 
 // utilise la méthode log qui prend en paramètres un tableaux;
-$stickFramework->stickLogger->log($logs);
-
-
- ?>
+$stickFramework->stickFramework->stickLogger->logger($logs);
+?>

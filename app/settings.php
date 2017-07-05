@@ -1,4 +1,5 @@
 <?php
+//tableaux de settings
 return array(
     'settings' => array(
         'paths' => array(

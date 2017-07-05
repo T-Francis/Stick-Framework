@@ -44,6 +44,7 @@ class StickDatabase
         $this->opt = array(
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_EMULATE_PREPARES   => false,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         );
 
         $this->pdo = null;
@@ -51,7 +52,7 @@ class StickDatabase
     }
 
     /**
-     * [getPDO description]
+     * [getPDO méthode qui retourne une instance de PDO]
      * @return [type] [description]
      */
     private function getPDO(){
@@ -68,50 +69,75 @@ class StickDatabase
     }
 
     /**
-     * [runQuery description]
-     * @param  [type]  $requete [description]
-     * @param  boolean $fObject [description]
-     * @return [type]           [description]
+     * [runQuery Méthode qui fait appel a la fonction native query() de PDO pour effectuer une requete directe non préparer]
+     * @param  [string]  $requete [requete a effectuer]
+     * @param  boolean $fObject [bool qui decidera si on retourne le set de données en objet]
+     * @param  boolean $lastId [bool qui retournera la derniere ID dans le cas d'un INSERT]
+     * @return [mixed]           [retourne un set de données en tableaux par défault]
      */
-    public function runQuery($requete, $fObject=false){
+    public function runQuery($requete, $fObject=false, $lastId=false){
+        //on recupere une instance de PDO et on execute la requete
         $req = $this->getPDO()->query($requete);
+
+        //fetch objet?
         if($fObject){
             $req->setFetchMode(PDO::FETCH_OBJ);
-        } else {
-            $req->setFetchMode(PDO::FETCH_ASSOC);
         }
+
+        //SI la requete rourne un set de données supérieur a 1 ligne ET que c'est un select
         if($req->rowCount() > 1 && strpos($requete, 'SELECT') === 0) {
+            //on FecthALL()
             $datas = $req->fetchAll();
         } else {
+            // SINON on fetch()
             $datas = $req->fetch();
+        }
+
+        //lastID?
+        if (strpos($requete, 'INSERT') === 0 && $lastId = true) {
+            return $this->lastInsertId();
         }
         return $datas;
     }
 
-    /**
-     * [preparedQuery description]
-     * @param  [type]  $requete    [description]
-     * @param  [type]  $parametres [description]
-     * @param  boolean $fObject    [description]
-     * @return [type]              [description]
-     */
-    public function preparedQuery($requete, $parametres, $fObject=false){
+
+     /**
+      * [preparedQuery Méthode qui fait appel a la fonction native query() de PDO pour effectuer une requete directe non préparer]
+      * @param  [string]  $requete [requete a préparé]
+      * @param  [type]  $parametres [arguments pour préparer la requete]
+      * @param  boolean $fObject [bool qui decidera si on retourne le set de données en objet]
+      * @param  boolean $lastId [bool qui retournera la derniere ID dans le cas d'un INSERT]
+      * @return [mixed]  $datas [retourne un set de données en tableaux par défault]
+      */
+    public function preparedQuery($requete, $parametres, $fObject=false, $lastId=false){
+        //on recupere une instance de PDO et on prépare la requete
         $req = $this->getPDO()->prepare($requete);
+        //on execute la requete avec les arguments en parametres
         $res = $req->execute($parametres);
+
+        //fetch objet?
         if($fObject){
             $req->setFetchMode(PDO::FETCH_OBJ);
         }
+        //SI la requete rourne un set de données supérieur a 1 ligne ET que c'est un select
         if($req->rowCount() > 1 && strpos($requete, 'SELECT') === 0) {
+            //on FecthALL()
             $datas = $req->fetchAll();
         } else {
+            // SINON on fetch()
             $datas = $req->fetch();
+        }
+
+        //lastID?
+        if (strpos($requete, 'INSERT') === 0 && $lastId = true) {
+            return $this->lastInsertId();
         }
         return $datas;
     }
 
     /**
-     * [lastInsertId description]
-     * @return [type] [description]
+     * [lastInsertId Méthode qui appel un instance de PDO et la fonction native lastInsertId()]
+     * @return [mixed] [rtourne la derniere ID inserer par PDO]
      */
     public function lastInsertId(){
         return $this->getPDO()->lastInsertId();
